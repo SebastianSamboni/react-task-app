@@ -17,3 +17,5 @@ const UserSchema = Schema({
         required: true,
     }
 })
+
+export default model('User', UserSchema, 'users')
