@@ -1,8 +1,8 @@
-import express from 'express'
+import app from './app.js'
+import {connectDB} from './db.js'
 
+connectDB()
 const port = 3900
-const app = express()
-
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`)
+    console.log(`Server on port ${port}`)
 })
