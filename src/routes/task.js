@@ -1,12 +1,19 @@
 import { Router } from 'express'
-import {authRequired} from '../middlewares/checkToken.js'
+import { authRequired } from '../middlewares/checkToken.js'
+import {
+    getTask,
+    getTasks,
+    createTask,
+    updateTask,
+    deleteTask
+} from '../controllers/task.js'
 
 const router = Router()
 
-router.get('/tasks', authRequired, )
-router.get('/tasks/:id', authRequired, )
-router.post('/tasks/:id', authRequired, )
-router.delete('/tasks/:id', authRequired, )
-router.put('/tasks/:id', authRequired, )
+router.get('/tasks', authRequired, getTasks)
+router.get('/tasks/:id', authRequired, getTask)
+router.post('/tasks', authRequired, createTask)
+router.delete('/tasks/:id', authRequired, deleteTask)
+router.put('/tasks/:id', authRequired, updateTask)
 
 export default router
