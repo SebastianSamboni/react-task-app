@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form'
-import { useAuth } from '../context/AuthContext'
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext'
+import { useContext, useEffect } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 
 const RegisterPage = () => {
     const { register, handleSubmit, formState: {errors} } = useForm()
-    const { signUp, isAuthenticated, registerErrors } = useAuth()
+    const { signUp, isAuthenticated, registerErrors } = useContext(AuthContext)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -13,6 +13,7 @@ const RegisterPage = () => {
     }, [isAuthenticated])
 
     const onSubmit = handleSubmit(async values => {
+        console.log(registerErrors)
         signUp(values)
     })
     
@@ -37,15 +38,18 @@ const RegisterPage = () => {
                     className='w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2'
                     placeholder='Email'
                 />
-                {errors.username && (<p className='text-red-500'>Email is required</p>)}
-                <input type="password" name="password"
+                {errors.email && (<p className='text-red-500'>Email is required</p>)}
+                <input type="password"
                     {...register('password', { required: true })}
                     className='w-full bg-zinc-700 text-white px-4 py-2 rounded-md my-2'
                     placeholder='Password'
                 />
-                {errors.username && (<p className='text-red-500'>Password is required</p>)}
+                {errors.password && (<p className='text-red-500'>Password is required</p>)}
                 <button type="submit">Register</button>
             </form>
+            <p className='flex gap-x-2 justify-between'>
+                Already have an account? <Link to='/login' className='text-sky-500'>Sign In</Link>
+            </p>
         </div>
     )
 }
