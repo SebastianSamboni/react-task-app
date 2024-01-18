@@ -53,8 +53,8 @@ export const login = async (req, res) => {
         const token = await createAccessToken({ id: userFound._id })
         res.cookie('token', token, {
             sameSite: 'none',
-            secure: 'true',
-            httpOnly: 'false'
+            secure: true,
+            httpOnly: false
         })
 
         res.status(200).json({
@@ -62,7 +62,8 @@ export const login = async (req, res) => {
             username: userFound.username,
             email: userFound.email,
             createdAt: userFound.createdAt,
-            updatedAt: userFound.updatedAt
+            updatedAt: userFound.updatedAt,
+            token: token
         })
     } catch (error) {
         console.log(`Error ${error}`)
@@ -101,6 +102,12 @@ export const verifyToken = async (req, res) => {
         
         const userFound = await User.findById(user.id)
         if (!userFound) return res.status(404).json({ message: 'No found' })
+
+        res.cookie('token', token, {
+            sameSite: 'none',
+            secure: true,
+            httpOnly: false
+        })
         
         return res.json({
             id: userFound._id,

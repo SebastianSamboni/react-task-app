@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [registerErrors, setRegisterErrors] = useState([])
+    const [loading, setLoading] = useState(true)
 
     const signUp = async user => {
         try{
@@ -46,28 +47,27 @@ export const AuthProvider = ({ children }) => {
         const checkLogin = async () => {
             const cookies = Cookies.get()
 
-            if (cookies.token) {
-                try {
-                    const res = await verifyTokenRequest(cookies.token)
-                    console.log(res)
-                    if (!res.data) setIsAuthenticated(false)
-                    
-                    setIsAuthenticated(true)
-                    setUser(res.data)
-                } catch (error) {
-                    console.log(error)
-                    setIsAuthenticated(false)
-                    setUser(null)
-                }
+            if (!cookies.token) {
+                setIsAuthenticated(false)
+                setLoading(false)
+                return
+            }
+                
+            try {
+                const res = await verifyTokenRequest(cookies.token)
+                if (!res.data) setIsAuthenticated(false)
+                
+                setIsAuthenticated(true)
+                setUser(res.data)
+                setLoading(false)
+            } catch (error) {
+                console.log(error)
+                setIsAuthenticated(false)
+                setLoading(false)
             }
         }
         checkLogin()
     }, [])
-
-    useEffect(() => {
-        console.log('user: ', user)
-        console.log('isAuthenticated: ', isAuthenticated)
-    }, [user, isAuthenticated])
 
     return (
         <AuthContext.Provider value={{
@@ -75,7 +75,8 @@ export const AuthProvider = ({ children }) => {
             signIn,
             user,
             isAuthenticated,
-            registerErrors
+            registerErrors,
+            loading
         }}>
             {children}
         </AuthContext.Provider>
