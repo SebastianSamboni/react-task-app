@@ -7,7 +7,7 @@ const TaskFormPage = () => {
     const { tasks, createTask } = useContext(TaskContext)
 
     const onSubmit = handleSubmit((data) => {
-        console.log(data)
+        createTask(data)
     })
 
     return (

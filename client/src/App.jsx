@@ -9,6 +9,7 @@ import TaskFormPage from './pages/TaskFormPage'
 import ProfilePage from './pages/ProfilePage'
 import ProtectedRoute from './ProtectedRoute'
 import { TaskProvider } from './context/TaskContext'
+import Navbar from './components/Navbar'
 
 const App = () => {
     return (
@@ -16,6 +17,7 @@ const App = () => {
             <AuthProvider>
                 <TaskProvider>
                     <BrowserRouter>
+                        <Navbar />
                         <Routes>
                             <Route path='/' element={<HomePage/>} />
                             <Route path='/login' element={<LoginPage/>} />
